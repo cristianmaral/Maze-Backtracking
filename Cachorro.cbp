@@ -35,7 +35,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Arquivo.h" />
-		<Unit filename="LabirintoCachorro" />
 		<Unit filename="LabirintoCachorro.c">
 			<Option compilerVar="CC" />
 		</Unit>

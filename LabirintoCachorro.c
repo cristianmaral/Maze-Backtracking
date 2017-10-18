@@ -2,77 +2,70 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-/* A utility function to print solution matrix sol[N][N] */
+/* Função para printar um possível caminho para atravessar o labirinto */
 void printSolution(int sol[N][N])
 {
-    for (int i = 0; i < N; i++)
+    int i, j;
+    printf("\n");
+    for (i = 0; i < N; i++)
     {
-        for (int j = 0; j < N; j++)
-            printf(" %d ", sol[i][j]);
+        for (j = 0; j < N; j++)
+            printf("%d ", sol[i][j]);
         printf("\n");
     }
 }
 
-/* A utility function to check if x,y is valid index for N*N maze */
-int isSafe(int maze[N][N], int x, int y)
+/* Função recursiva que utiliza do paradigma Backtrack para encontrar um possível caminho */
+/* para o cachorro chegar ao destino do labirinto */
+int solveMazeUtil(Maze maze[N][N], int x, int y, int sol[N][N])
 {
-    // if (x,y outside maze) return false
-    if(x >= 0 && x < N && y >= 0 && y < N && maze[x][y] == 1)
-        return 1;
-
-    return -1;
-}
-
-/* A recursive utility function to solve Maze problem */
-int solveMazeUtil(int maze[N][N], int x, int y, int sol[N][N])
-{
-    // if (x,y is goal) return true
-    if(x == N-1 && y == N-1)
+    /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
+    if(x == 0 && maze[x][y].valor == 1)
     {
         sol[x][y] = 1;
         return 1;
     }
 
-    // Check if maze[x][y] is valid
-    if(isSafe(maze, x, y) == 1)
+    /* Checando se a posição atual do labirinto é válida para tentar avançar no labirinto a partir dela */
+    if(x >= 0 && x < N && y >= 0 && y < N && maze[x][y].valor == 1 && maze[x][y].visitou == 0)
     {
-        // mark x,y as part of solution path
-        sol[x][y] = 1;
+        sol[x][y] = 1; //Marcando como posição válida para a matriz de solução
+        maze[x][y].visitou = 1; //Flag responsável por controlar as visitas de cada posição do labirinto
 
-        /* Move forward in x direction */
-        if (solveMazeUtil(maze, x+1, y, sol) == 1)
+        /* Tentando mover o cachorro para cima */
+        if (solveMazeUtil(maze, x-1, y, sol) == 1)
             return 1;
 
-        /* If moving in x direction doesn't give solution then
-           Move down in y direction  */
+        /* Tentando mover o cachorro para a direita */
         if (solveMazeUtil(maze, x, y+1, sol) == 1)
             return 1;
 
-        /* If none of the above movements work then BACKTRACK:
-            unmark x,y as part of solution path */
-        sol[x][y] = 0;
-        return -1;
+        /* Tentando mover o cachorro para a esquerda */
+        if (solveMazeUtil(maze, x, y-1, sol) == 1)
+           return 1;
+
+        /* Se nenhuma das possibilidades de movimento acima resultarem em uma posição válida, */
+        /* será necessário utilizar backtrack */
+        sol[x][y] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
+        return -1; //Backtrack
     }
 
+    /* Não é possível chegar ao topo do labirinto por nenhum caminho */
     return -1;
 }
 
-/* This function solves the Maze problem using Backtracking.  It mainly
-   uses solveMazeUtil() to solve the problem. It returns false if no
-   path is possible, otherwise return true and prints the path in the
-   form of 1s. Please note that there may be more than one solutions,
-   this function prints one of the feasible solutions.*/
-int solveMaze(int maze[N][N])
+/* Função para encapsular a função "solveMazeUtil", cujo objetivo se baseia em informar */
+/* a posição inicial do cachorro */
+int solveMaze(Maze maze[N][N])
 {
-    int sol[N][N] = { {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
+    int sol[N][N] = { {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0}
     };
 
-    if(solveMazeUtil(maze, 0, 0, sol) == -1)
+    if(solveMazeUtil(maze, N-1, 0, sol) == -1)
     {
         printf("Solution doesn't exist");
         return -1;
