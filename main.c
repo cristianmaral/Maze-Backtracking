@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "LabirintoCachorro.h"
+#include "NRainhas.h"
 
+/**** MAIN MENU PROGRAMA PRINCIPAL ****/
 /*
 int main()
 {
@@ -32,13 +34,14 @@ int main()
     return 0;
 }*/
 
-int main()
+/***** MAIN LABIRINTO - CRISTIAN  ****/
+/*int main()
 {
-    /*{0, 0, 1, 0, 1},
-      {1, 0, 0, 1, 1},
-      {0, 1, 1, 0, 1},
-      {1, 1, 1, 1, 1},
-      {1, 1, 1, 1, 0}*/
+      //{0, 0, 1, 0, 1},
+      //{1, 0, 0, 1, 1},
+      //{0, 1, 1, 0, 1},
+     // {1, 1, 1, 1, 1},
+     // {1, 1, 1, 1, 0}
 
     Maze maze[N][N];
     int i, j;
@@ -75,5 +78,21 @@ int main()
         printf("\n");
     }
     solveMaze(maze);
+    return 0;
+}
+*/
+
+/**** MAIN N_RAINHAS - ANDREY ***/
+int main() {
+    int matriz[N][N];
+    int i,j;
+    for(i=0;i<N;i++)
+        for(j=0;j<N;j++)
+            matriz[i][j] = 0;
+
+    if (achaPosicaoRainha(matriz, 0) == -1)
+        printf("Solucao nao existe!");
+    else
+        mostraSolucao(matriz);
     return 0;
 }
