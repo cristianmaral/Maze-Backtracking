@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "Arquivo.h"
 #include "LabirintoCachorro.h"
 #include "NRainhas.h"
 
 /**** MAIN MENU PROGRAMA PRINCIPAL ****/
-/*
 int main()
 {
-    int opcao;
+    FILE *arquivoDeEntrada = NULL;
+    Labirinto **labirinto;
+    char nomeArquivo[100];
+    int opcao, linhas, colunas;
 
     while (1) {
         printf("+-------------------------------------+\n");
@@ -24,18 +28,39 @@ int main()
         scanf("%d", &opcao);
         switch (opcao) {
             case 1:
+                while (arquivoDeEntrada == NULL) {
+                    fflush(stdin);
+                    printf("Entre com o nome do arquivo de entrada: ");
+                    scanf("%[^\n]s", nomeArquivo);
+                    arquivoDeEntrada = fopen(nomeArquivo, "r");
+                    if (arquivoDeEntrada != NULL) {
+                        printf("Arquivo carregado com sucesso!\n\n");
+                        labirinto = leLabirintoEntrada(arquivoDeEntrada, &linhas, &colunas);
+                    }
+                    else {
+                        printf("ERRO: Arquivo inexistente!\n");
+                    }
+                }
                 break;
             case 2:
+                if (arquivoDeEntrada == NULL) {
+                    printf("Por favor carregue antes um arquivo de dados!\n");
+                    system("PAUSE");
+                    printf("\n");
+                }
                 break;
+            case 3:
+                printf("Fim do programa!\n");
+                return 0;
             default:
                 printf("Opcao invalida!\n\n");
         }
     }
-    return 0;
-}*/
+}
 
 /***** MAIN LABIRINTO - CRISTIAN  ****/
-/*int main()
+/*
+int main()
 {
       //{0, 0, 1, 0, 1},
       //{1, 0, 0, 1, 1},
@@ -43,16 +68,13 @@ int main()
      // {1, 1, 1, 1, 1},
      // {1, 1, 1, 1, 0}
 
-    Maze maze[N][N];
+    Labirinto **maze = (Labirinto **)malloc(5 * sizeof(Labirinto *));
     int i, j;
 
-    for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            maze[i][j].valor = 0;
-            maze[i][j].visitou = 0;
-        }
+    for(i=0; i<N; i++) {
+        maze[i] = (Labirinto *)calloc(5, sizeof(Labirinto));
     }
-    //maze[0][0].valor = 1;
+
     maze[0][2].valor = 1;
     maze[0][4].valor = 1;
     maze[1][0].valor = 1;
@@ -77,12 +99,12 @@ int main()
             printf("%d ",maze[i][j].valor);
         printf("\n");
     }
-    solveMaze(maze);
+    solveMaze(maze, N, N);
     return 0;
-}
-*/
+}*/
 
 /**** MAIN N_RAINHAS - ANDREY ***/
+/*
 int main() {
     int matriz[N][N];
     int i,j;
@@ -95,4 +117,4 @@ int main() {
     else
         mostraSolucao(matriz);
     return 0;
-}
+}*/

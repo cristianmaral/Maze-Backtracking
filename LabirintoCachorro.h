@@ -1,17 +1,17 @@
 #ifndef LABIRINTOCACHORRO_H_INCLUDED
 #define LABIRINTOCACHORRO_H_INCLUDED
 
-// Maze size
 #define N 5
 
 typedef struct {
     int valor;
     int visitou;
-} Maze;
+} Labirinto;
 
+Labirinto** alocaLabirinto (int linhas, int colunas);
 void printSolution(int sol[N][N]);
-int solveMazeUtil(Maze maze[N][N], int x, int y, int sol[N][N]);
-int solveMaze(Maze maze[N][N]);
+int solveMazeUtil(Labirinto **labirinto, int sol[N][N], int linhas, int colunas, int i, int j);
+int solveMaze(Labirinto **labirinto, int linhas, int colunas);
 
 
 #endif // LABIRINTOCACHORRO_H_INCLUDED
