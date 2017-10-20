@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1508421535 source:c:\users\cristian amaral\desktop\maze-backtracking\arquivo.c
+	"Arquivo.h"
+
+1508375753 c:\users\cristian amaral\desktop\maze-backtracking\arquivo.h
+	"LabirintoCachorro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1508438197 c:\users\cristian amaral\desktop\maze-backtracking\labirintocachorro.h
+
+1508453637 source:c:\users\cristian amaral\desktop\maze-backtracking\labirintocachorro.c
+	"LabirintoCachorro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1508438348 source:c:\users\cristian amaral\desktop\maze-backtracking\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Arquivo.h"
+	"LabirintoCachorro.h"
+	"NRainhas.h"
+
+1508373334 c:\users\cristian amaral\desktop\maze-backtracking\nrainhas.h
+
+1508373334 source:c:\users\cristian amaral\desktop\maze-backtracking\nrainhas.c
+	"NRainhas.h"
+	<stdio.h>
+	<stdlib.h>
+

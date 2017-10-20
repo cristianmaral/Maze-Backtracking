@@ -5,7 +5,6 @@
 #include "LabirintoCachorro.h"
 #include "NRainhas.h"
 
-/**** MAIN MENU PROGRAMA PRINCIPAL ****/
 int main()
 {
     FILE *arquivoDeEntrada = NULL;
@@ -13,7 +12,9 @@ int main()
     char nomeArquivo[100];
     int opcao, linhas, colunas;
 
+    /* Repetir até que a opção 3 seja escolhida - finaliza o programa */
     while (1) {
+        /* MENU */
         printf("+-------------------------------------+\n");
         printf("|        Programa do Labirinto        |\n");
         printf("+-------------------------------------+\n");
@@ -28,19 +29,19 @@ int main()
         scanf("%d", &opcao);
         switch (opcao) {
             case 1:
-                while (arquivoDeEntrada == NULL) {
+                do {
                     fflush(stdin);
                     printf("Entre com o nome do arquivo de entrada: ");
                     scanf("%[^\n]s", nomeArquivo);
                     arquivoDeEntrada = fopen(nomeArquivo, "r");
                     if (arquivoDeEntrada != NULL) {
-                        printf("Arquivo carregado com sucesso!\n\n");
+                        printf("Arquivo %s carregado com sucesso!\n\n", nomeArquivo);
                         labirinto = leLabirintoEntrada(arquivoDeEntrada, &linhas, &colunas);
                     }
                     else {
                         printf("ERRO: Arquivo inexistente!\n");
                     }
-                }
+                } while (arquivoDeEntrada == NULL);
                 break;
             case 2:
                 if (arquivoDeEntrada == NULL) {
@@ -48,6 +49,13 @@ int main()
                     system("PAUSE");
                     printf("\n");
                 }
+                else {
+                    printf("Calculando um possivel caminho para o cachorro...\n");
+                    solveMaze(labirinto, linhas, colunas);
+                }
+                /* Resetando as visitas para que seja possível se o usuário desejar calcular */
+                /* o caminho novamente com o mesmo arquivo de entrada */
+                resetaVisitas(labirinto, linhas, colunas);
                 break;
             case 3:
                 printf("Fim do programa!\n");
