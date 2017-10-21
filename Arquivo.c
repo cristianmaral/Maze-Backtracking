@@ -1,15 +1,18 @@
 #include "Arquivo.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-void leArquivoEntrada (int **matriz, int *linhas, int *colunas) {
-    FILE *arquivoDeEntrada = fopen("Espaço Geográfico.txt", "r");
+Labirinto** leLabirintoEntrada (FILE *arquivoDeEntrada, int *linhas, int *colunas) {
+    Labirinto **labirinto;
+    char *aux;
     int i, j;
 
     fscanf(arquivoDeEntrada, "%d %d", linhas, colunas);
+    aux = (char *)malloc(*colunas * sizeof(char));
+    labirinto = alocaLabirinto(*linhas, *colunas);
     for (i=0; i<*linhas; i++) {
+        fscanf(arquivoDeEntrada, "%s", aux);
         for (j=0; j<*colunas; j++) {
-            fscanf(arquivoDeEntrada, "%d", &matriz[i][j]);
+            labirinto[i][j].valor = aux[j] - '0';
         }
     }
+    return labirinto;
 }
