@@ -51,7 +51,7 @@ int main()
                 }
                 else {
                     printf("Calculando um possivel caminho para o cachorro...\n");
-                    solveMaze(labirinto, linhas, colunas);
+                    solucionaLabirinto(labirinto, linhas, colunas);
                 }
                 /* Resetando as visitas para que seja possível se o usuário desejar calcular */
                 /* o caminho novamente com o mesmo arquivo de entrada */

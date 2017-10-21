@@ -51,79 +51,49 @@ int colunaInicial (Labirinto **labirinto, int linhas, int colunas) {
 /* Função auxiliar para indicar se o caminho segue para a direita ou para a esquerda */
 int calculaFlag (int *linhaSolucao, int jInicial) {
     if (linhaSolucao[jInicial + 1] == 1)
-        return 1;
+        return 1; //O caminho segue para a direita
     else
-        return 0;
+        return 0; //O caminho segue para a esquerda
 }
 
 /* Função para printar um possível caminho para atravessar o labirinto */
-void printSolution(int **solucao, int linhas, int colunas, int jInicial)
-{
-    int i, j, aux = 0;
+void imprimeSolucao(int **solucao, int movimentacoes, int linhas, int colunas, int jInicial) {
+    int i, j;
+    /* A variável jInicial se refere à coluna onde inicia o caminho do cachorro em uma linha do labirinto */
+    /* O valor dessa variável recebida como parâmetro condiz com a coluna inicial do cachorro */
 
     for (i=linhas-1; i>0; i--) {
-        /* Imprimindo o caminho da base do labirinto */
-        if (i == linhas - 1) {
-            /* O próximo movimento é para a direita */
-            if (calculaFlag(solucao[i], jInicial) == 1) {
-                for (j=jInicial; j<colunas; j++) {
-                    if (solucao[i][j] == 1) {
-                        printf("Linha: %d Coluna: %d\n", i, j);
-                        if (j < colunas - 1 && solucao[i][j+1] != 1) {
-                            aux = j; /* Indica qual coluna o caminho da linha de cima continua */
-                            break;
-                        }
-                    }
-                }
-            }
-            /* O próximo movimento é para a esquerda */
-            else {
-                for (j=jInicial; j>=0; j--) {
-                    if (solucao[i][j] == 1) {
-                        printf("Linha: %d Coluna: %d\n", i, j);
-                        if (j > 0 && solucao[i][j-1] != 1) {
-                            aux = j; /* Indica qual coluna o caminho da linha de cima continua */
-                            break;
-                        }
+        /* O próximo movimento é para a direita */
+        if (calculaFlag(solucao[i], jInicial) == 1) {
+            for (j=jInicial; j<colunas; j++) {
+                if (solucao[i][j] == 1) {
+                    printf("Linha: %d Coluna: %d\n", i, j);
+                    if (j < colunas - 1 && solucao[i][j+1] != 1) {
+                        jInicial = j; /* Indica qual coluna o caminho da linha de cima continua */
+                        break;
                     }
                 }
             }
         }
-        /* Imprimindo o caminho das outras linhas do labirinto */
+        /* O próximo movimento é para a esquerda */
         else {
-            /* O próximo movimento é para a direita */
-            if (calculaFlag(solucao[i], aux) == 1) {
-                for (j=aux; j<colunas; j++) {
-                    if (solucao[i][j] == 1) {
-                        printf("Linha: %d Coluna: %d\n", i, j);
-                        if (j < colunas - 1 && solucao[i][j+1] != 1) {
-                            aux = j; /* Indica qual coluna o caminho da linha de cima continua */
-                            break;
-                        }
-                    }
-                }
-            }
-            /* O próximo movimento é para a esquerda */
-            else {
-                for (j=aux; j>=0; j--) {
-                    if (solucao[i][j] == 1) {
-                        printf("Linha: %d Coluna: %d\n", i, j);
-                        if (j > 0 && solucao[i][j-1] != 1) {
-                            aux = j; /* Indica qual coluna o caminho da linha de cima continua */
-                            break;
-                        }
+            for (j=jInicial; j>=0; j--) {
+                if (solucao[i][j] == 1) {
+                    printf("Linha: %d Coluna: %d\n", i, j);
+                    if (j > 0 && solucao[i][j-1] != 1) {
+                        jInicial = j; /* Indica qual coluna o caminho da linha de cima continua */
+                        break;
                     }
                 }
             }
         }
     }
-    printf("O cachorro se movimentou x vezes e chegou na coluna %d da primeira linha\n", aux);
+    printf("O cachorro se movimentou %d vezes e chegou na coluna %d da primeira linha\n", movimentacoes, jInicial);
 }
 
 /* Função recursiva que utiliza do paradigma Backtrack para encontrar um possível caminho */
 /* para o cachorro chegar ao destino do labirinto */
-int solveMazeUtil(Labirinto **labirinto, int **solucao, int linhas, int colunas, int i, int j)
-{
+int backTrackLabirinto(Labirinto **labirinto, int **solucao, int *movimentacoes, int linhas, int colunas, int i, int j) {
     /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
     if(i == 0 && labirinto[i][j].valor == 1)
     {
@@ -137,22 +107,24 @@ int solveMazeUtil(Labirinto **labirinto, int **solucao, int linhas, int colunas,
     {
         solucao[i][j] = 1; //Marcando como posição válida para a matriz de solução
         labirinto[i][j].visitou = 1; //Flag responsável por controlar as visitas de cada posição do labirinto
+        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
 
         /* Tentando mover o cachorro para cima */
-        if (solveMazeUtil(labirinto, solucao, linhas, colunas, i-1, j) == 1)
+        if (backTrackLabirinto(labirinto, solucao, movimentacoes, linhas, colunas, i-1, j) == 1)
             return 1;
 
         /* Tentando mover o cachorro para a direita */
-        if (solveMazeUtil(labirinto, solucao, linhas, colunas, i, j+1) == 1)
+        if (backTrackLabirinto(labirinto, solucao, movimentacoes, linhas, colunas, i, j+1) == 1)
             return 1;
 
         /* Tentando mover o cachorro para a esquerda */
-        if (solveMazeUtil(labirinto, solucao, linhas, colunas, i, j-1) == 1)
+        if (backTrackLabirinto(labirinto, solucao, movimentacoes, linhas, colunas, i, j-1) == 1)
            return 1;
 
         /* Se nenhuma das possibilidades de movimento acima resultarem em uma posição válida, */
         /* será necessário utilizar backtrack */
         solucao[i][j] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
+        (*movimentacoes)++; //O cachorro se movimenta para uma posição anterior
         return -1; //Backtrack
     }
 
@@ -160,22 +132,18 @@ int solveMazeUtil(Labirinto **labirinto, int **solucao, int linhas, int colunas,
     return -1;
 }
 
-/* Função para encapsular a função "solveMazeUtil", cujo objetivo se baseia em informar */
+/* Função para encapsular a função "backTrackLabirinto", cujo objetivo se baseia em informar */
 /* a posição inicial do cachorro */
-int solveMaze(Labirinto **labirinto, int linhas, int colunas)
-{
+void solucionaLabirinto(Labirinto **labirinto, int linhas, int colunas) {
     int **solucao = alocaSolucao(linhas, colunas);
     int iInicial = linhas - 1;
     int jInicial = colunaInicial(labirinto, linhas, colunas);
+    int movimentacoes = 0;
 
-    if(solveMazeUtil(labirinto, solucao, linhas, colunas, iInicial, jInicial) == -1)
-    {
+    if(backTrackLabirinto(labirinto, solucao, &movimentacoes, linhas, colunas, iInicial, jInicial) == -1)
         printf("Solution doesn't exist\n\n");
-        return -1;
-    }
-
-    printSolution(solucao, linhas, colunas, jInicial);
-    return 1;
+    else
+        imprimeSolucao(solucao, movimentacoes, linhas, colunas, jInicial);
 }
 
 
