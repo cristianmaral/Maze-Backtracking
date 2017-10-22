@@ -1,9 +1,8 @@
+#include "Arquivo.h"
+#include "LabirintoCachorro.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Arquivo.h"
-#include "LabirintoCachorro.h"
-#include "NRainhas.h"
 
 int main()
 {
@@ -65,64 +64,3 @@ int main()
         }
     }
 }
-
-/***** MAIN LABIRINTO - CRISTIAN  ****/
-/*
-int main()
-{
-      //{0, 0, 1, 0, 1},
-      //{1, 0, 0, 1, 1},
-      //{0, 1, 1, 0, 1},
-     // {1, 1, 1, 1, 1},
-     // {1, 1, 1, 1, 0}
-
-    Labirinto **maze = (Labirinto **)malloc(5 * sizeof(Labirinto *));
-    int i, j;
-
-    for(i=0; i<N; i++) {
-        maze[i] = (Labirinto *)calloc(5, sizeof(Labirinto));
-    }
-
-    maze[0][2].valor = 1;
-    maze[0][4].valor = 1;
-    maze[1][0].valor = 1;
-    maze[1][1].valor = 1;
-    maze[1][3].valor = 1;
-    maze[1][4].valor = 1;
-    maze[2][1].valor = 1;
-    maze[2][2].valor = 1;
-    maze[2][4].valor = 1;
-    maze[3][1].valor = 1;
-    maze[3][2].valor = 1;
-    maze[3][3].valor = 1;
-    maze[3][4].valor = 1;
-    maze[3][0].valor = 1;
-    maze[4][1].valor = 1;
-    maze[4][2].valor = 1;
-    maze[4][3].valor = 1;
-    maze[4][0].valor = 1;
-
-    for(i=0;i<N;i++){
-        for(j=0;j<N;j++)
-            printf("%d ",maze[i][j].valor);
-        printf("\n");
-    }
-    solveMaze(maze, N, N);
-    return 0;
-}*/
-
-/**** MAIN N_RAINHAS - ANDREY ***/
-/*
-int main() {
-    int matriz[N][N];
-    int i,j;
-    for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
-            matriz[i][j] = 0;
-
-    if (achaPosicaoRainha(matriz, 0) == -1)
-        printf("Solucao nao existe!");
-    else
-        mostraSolucao(matriz);
-    return 0;
-}*/

@@ -39,10 +39,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="LabirintoCachorro.h" />
-		<Unit filename="NRainhas.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="NRainhas.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
