@@ -94,8 +94,7 @@ void imprimeSolucao(int **solucao, int movimentacoes, int linhas, int colunas, i
 /* para o cachorro chegar ao destino do labirinto */
 int backTrackLabirinto(Labirinto **labirinto, int **solucao, int *movimentacoes, int linhas, int colunas, int i, int j) {
     /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
-    if(i == 0 && labirinto[i][j].valor == 1)
-    {
+    if(i == 0 && labirinto[i][j].valor == 1) {
         solucao[i][j] = 1;
         return 1;
     }
@@ -143,7 +142,8 @@ int backTrackLabirinto2(Labirinto **labirinto, int **solucao, int *movimentacoes
     nivel++;
     /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
     if(i == 0 && labirinto[i][j].valor == 1) {
-        *maiorNivelRecursao = nivel;
+        if (nivel > *maiorNivelRecursao)
+            *maiorNivelRecursao = nivel;
         solucao[i][j] = 1;
         return 1;
     }
@@ -155,21 +155,21 @@ int backTrackLabirinto2(Labirinto **labirinto, int **solucao, int *movimentacoes
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
 
         /* Tentando mover o cachorro para cima */
-        if (labirinto[i - 1][j].visitou == 0) {
+        if (labirinto[i - 1][j].visitou == 0) { //Conferindo se a posição à cima já foi visitada
             if (backTrackLabirinto2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i - 1, j) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a direita */
-        if (labirinto[i][j + 1].visitou == 0) {
+        if (labirinto[i][j + 1].visitou == 0) { //Conferindo se a posição à direita já foi visitada
             if (backTrackLabirinto2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i, j + 1) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a esquerda */
-        if (labirinto[i][j - 1].visitou == 0) {
+        if (labirinto[i][j - 1].visitou == 0) { //Conferindo se a posição à esquerda já foi visitada
             if (backTrackLabirinto2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i, j - 1) == 1)
                 return 1;
@@ -178,11 +178,14 @@ int backTrackLabirinto2(Labirinto **labirinto, int **solucao, int *movimentacoes
         /* será necessário utilizar backtrack */
         solucao[i][j] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
         (*movimentacoes)++; //O cachorro se movimenta para uma posição anterior
+        if (nivel > *maiorNivelRecursao)
+            *maiorNivelRecursao = nivel;
         return -1; //Backtrack
     }
 
     /* Não é possível chegar ao topo do labirinto por nenhum caminho */
-    *maiorNivelRecursao = nivel;
+    if (nivel > *maiorNivelRecursao)
+        *maiorNivelRecursao = nivel;
     return -1;
 }
 
@@ -197,7 +200,7 @@ void solucionaLabirinto(Labirinto **labirinto, int linhas, int colunas) {
     if(backTrackLabirinto(labirinto, solucao, &movimentacoes, linhas, colunas, iInicial, jInicial) == -1)
         printf("O cachorro se movimentou %d vezes e percebeu que o labirinto nao tem saida\n\n", movimentacoes);
     else
-        imprimeSolucao(solucao, movimentacoes, linhas, colunas, jInicial);
+        imprimeSolucao(solucao, movimentacoes, linhas, colunas, jInicial); //Imprime o caminho
 }
 
 /* Função para encapsular a função backTrackLabirinto2 - MODO ANÁLISE */
@@ -207,7 +210,7 @@ void solucionaLabirinto2(Labirinto **labirinto, int linhas, int colunas) {
     int jInicial = colunaInicial(labirinto, linhas, colunas); //Coluna inicial do cachorro
     int movimentacoes = 0; //Quantidade de movimentações do cachorro
     int chamadasRecursivas = 0; //Número de chamadas da função backTrackLabirinto2
-    int nivel = 0; //Variável auxiliar responsável por conter o nível atual de chamadas recursivas - começando de 1
+    int nivel = 0; //Variável auxiliar responsável por conter o nível atual de chamadas recursivas
     int maiorNivelRecursao = 0; //Representa o maior nível de recursividade da função backTrackLabirinto2
 
     if(backTrackLabirinto2(labirinto, solucao, &movimentacoes, &chamadasRecursivas, &maiorNivelRecursao, nivel,

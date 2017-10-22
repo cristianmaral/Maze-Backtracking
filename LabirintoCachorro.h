@@ -14,7 +14,7 @@ int calculaFlag (int *linhaSolucao, int jInicial);
 void imprimeSolucao(int **solucao, int movimentacoes, int linhas, int colunas, int jInicial);
 int backTrackLabirinto(Labirinto **labirinto, int **solucao, int *movimentacoes, int linhas, int colunas, int i, int j);
 int backTrackLabirinto2(Labirinto **labirinto, int **solucao, int *movimentacoes, int *chamadasRecursivas,
-                        int * maiorNivelRecursao, int aux, int linhas, int colunas, int i, int j);
+                        int * maiorNivelRecursao, int nivel, int linhas, int colunas, int i, int j);
 void solucionaLabirinto(Labirinto **labirinto, int linhas, int colunas);
 void solucionaLabirinto2(Labirinto **labirinto, int linhas, int colunas);
 
