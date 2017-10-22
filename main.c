@@ -30,7 +30,7 @@ int main()
         switch (opcao) {
             case 1:
                 do {
-                    fflush(stdin);
+                    getchar();
                     printf("Entre com o nome do arquivo de entrada: ");
                     scanf("%[^\n]s", nomeArquivo);
                     arquivoDeEntrada = fopen(nomeArquivo, "r");

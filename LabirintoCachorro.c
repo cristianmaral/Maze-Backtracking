@@ -7,7 +7,7 @@ Labirinto** alocaLabirinto (int linhas, int colunas) {
     Labirinto **labirinto;
     int i;
 
-    labirinto = (Labirinto **)malloc(linhas * sizeof(Labirinto));
+    labirinto = (Labirinto **)malloc(linhas * sizeof(Labirinto *));
     for (i=0; i<linhas; i++) {
         labirinto[i] = (Labirinto *)calloc(colunas, sizeof(Labirinto));
     }
@@ -19,7 +19,7 @@ int** alocaSolucao (int linhas, int colunas) {
     int **solucao;
     int i;
 
-    solucao = (int **)malloc(linhas * sizeof(int));
+    solucao = (int **)malloc(linhas * sizeof(int *));
     for (i=0; i<linhas; i++) {
         solucao[i] = (int *)calloc(colunas, sizeof(int));
     }
@@ -138,7 +138,7 @@ int backTrackLabirinto(Labirinto **labirinto, int **solucao, int *movimentacoes,
 /* para o cachorro chegar ao destino do labirinto - MODO ANÁLISE */
 int backTrackLabirinto2(Labirinto **labirinto, int **solucao, int *movimentacoes, int *chamadasRecursivas,
                         int *maiorNivelRecursao, int nivel, int linhas, int colunas, int i, int j) {
-    (*chamadasRecursivas)++;
+    (*chamadasRecursivas)++; //Variável incrementada toda vez que esta função for chamada
     nivel++;
     /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
     if(i == 0 && labirinto[i][j].valor == 1) {
@@ -205,7 +205,7 @@ void solucionaLabirinto(Labirinto **labirinto, int linhas, int colunas) {
 
 /* Função para encapsular a função backTrackLabirinto2 - MODO ANÁLISE */
 void solucionaLabirinto2(Labirinto **labirinto, int linhas, int colunas) {
-    int **solucao = alocaSolucao(linhas, colunas); //Matriz de solução - um caminho possível
+    int **solucao = alocaSolucao(linhas, colunas);// = alocaSolucao(linhas, colunas); //Matriz de solução - um caminho possível
     int iInicial = linhas - 1; //Linha inicial do cachorro
     int jInicial = colunaInicial(labirinto, linhas, colunas); //Coluna inicial do cachorro
     int movimentacoes = 0; //Quantidade de movimentações do cachorro
