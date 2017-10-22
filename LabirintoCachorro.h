@@ -3,7 +3,7 @@
 
 /* Estrutura de dados para o labirinto */
 typedef struct {
-    int valor; //Indica se é um caminho válido, parede ou a posição inicial do cachorro (1, 2, 3 respectivamente)
+    int cor; //Indica se é uma posição válida, parede ou a posição inicial do cachorro (1, 2, 3 respectivamente)
     int visitou; //Indica se uma posição do labirinto já foi visitada pelo cachorro (1 para sim e 0 para não)
 } Labirinto;
 

@@ -54,11 +54,13 @@ int main()
             case 2:
                 if (arquivoDeEntrada == NULL) {
                     printf("Por favor carregue antes um arquivo de dados!\n");
-                    system("PAUSE");
+                    printf("Pressione qualquer tecla para continuar...");
+                    getchar();
+                    getchar();
                     printf("\n");
                 }
                 else {
-                    printf("Calculando um possivel caminho para o cachorro...\n");
+                    printf("Calculando um possivel caminho para o cachorro...\n\n");
                     #ifndef ANALISE
                         solucionaLabirinto(labirinto, linhas, colunas);
                     #else

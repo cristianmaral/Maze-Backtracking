@@ -41,7 +41,7 @@ void resetaVisitas (Labirinto **labirinto, int linhas, int colunas) {
 int colunaInicial (Labirinto **labirinto, int linhas, int colunas) {
     int i;
     for (i=0; i<colunas; i++) {
-        if (labirinto[linhas - 1][i].valor == 2) {
+        if (labirinto[linhas - 1][i].cor == 2) {
             return i;
         }
     }
@@ -94,31 +94,31 @@ void imprimeSolucao (int **solucao, int movimentacoes, int linhas, int colunas, 
 /* para o cachorro chegar ao destino do labirinto */
 int movimenta_cachorro (Labirinto **labirinto, int **solucao, int *movimentacoes, int linhas, int colunas, int i, int j) {
     /* Se o cachorro conseguiu chegar ao topo do labirinto, returna 1 (encontrou um caminho válido) */
-    if(i == 0 && labirinto[i][j].valor == 1) {
+    if(i == 0 && labirinto[i][j].cor == 1) {
         solucao[i][j] = 1;
         return 1;
     }
 
     /* Checando se a posição atual do labirinto é válida para tentar avançar no labirinto a partir dela */
-    if(i >= 0 && i < linhas && j >= 0 && j < colunas && (labirinto[i][j].valor == 1 || labirinto[i][j].valor == 2)) {
-        solucao[i][j] = 1; //Marcando como posição válida para a matriz de solução
+    if (i >= 0 && i < linhas && j >= 0 && j < colunas) {
+        solucao[i][j] = 1; //Marcando como uma possível posição válida para a matriz de solução
         labirinto[i][j].visitou = 1; //Flag responsável por controlar as visitas de cada posição do labirinto
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
 
         /* Tentando mover o cachorro para cima */
-        if (labirinto[i - 1][j].visitou == 0) { //Conferindo se a posição à cima já foi visitada
+        if (labirinto[i - 1][j].cor != 3 && labirinto[i - 1][j].visitou == 0) {
             if (movimenta_cachorro(labirinto, solucao, movimentacoes, linhas, colunas, i - 1, j) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a direita */
-        if (labirinto[i][j + 1].visitou == 0) { //Conferindo se a posição à direita já foi visitada
+        if (labirinto[i][j + 1].cor != 3 && labirinto[i][j + 1].visitou == 0) {
             if (movimenta_cachorro(labirinto, solucao, movimentacoes, linhas, colunas, i, j + 1) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a esquerda */
-        if (labirinto[i][j - 1].visitou == 0) { //Conferindo se a posição à esquerda já foi visitada
+        if (labirinto[i][j - 1].cor != 3 && labirinto[i][j - 1].visitou == 0) {
             if (movimenta_cachorro(labirinto, solucao, movimentacoes, linhas, colunas, i, j - 1) == 1)
                return 1;
         }
@@ -141,7 +141,7 @@ int movimenta_cachorro2 (Labirinto **labirinto, int **solucao, int *movimentacoe
     (*chamadasRecursivas)++; //Variável incrementada toda vez que esta função for chamada
     nivel++;
     /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
-    if(i == 0 && labirinto[i][j].valor == 1) {
+    if (i == 0 && labirinto[i][j].cor == 1) {
         if (nivel > *maiorNivelRecursao)
             *maiorNivelRecursao = nivel;
         solucao[i][j] = 1;
@@ -149,27 +149,27 @@ int movimenta_cachorro2 (Labirinto **labirinto, int **solucao, int *movimentacoe
     }
 
     /* Checando se a posição atual do labirinto é válida para tentar avançar no labirinto a partir dela */
-    if(i >= 0 && i < linhas && j >= 0 && j < colunas && (labirinto[i][j].valor == 1 || labirinto[i][j].valor == 2)) {
+    if (i >= 0 && i < linhas && j >= 0 && j < colunas) {
         solucao[i][j] = 1; //Marcando como posição válida para a matriz de solução
         labirinto[i][j].visitou = 1; //Flag responsável por controlar as visitas de cada posição do labirinto
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
 
         /* Tentando mover o cachorro para cima */
-        if (labirinto[i - 1][j].visitou == 0) { //Conferindo se a posição à cima já foi visitada
+        if (labirinto[i - 1][j].cor != 3 && labirinto[i - 1][j].visitou == 0) {
             if (movimenta_cachorro2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i - 1, j) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a direita */
-        if (labirinto[i][j + 1].visitou == 0) { //Conferindo se a posição à direita já foi visitada
+        if (labirinto[i][j + 1].cor != 3 && labirinto[i][j + 1].visitou == 0) {
             if (movimenta_cachorro2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i, j + 1) == 1)
                 return 1;
         }
 
         /* Tentando mover o cachorro para a esquerda */
-        if (labirinto[i][j - 1].visitou == 0) { //Conferindo se a posição à esquerda já foi visitada
+        if (labirinto[i][j - 1].cor != 3 && labirinto[i][j - 1].visitou == 0) {
             if (movimenta_cachorro2(labirinto, solucao, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
                                     linhas, colunas, i, j - 1) == 1)
                 return 1;

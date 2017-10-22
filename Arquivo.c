@@ -12,8 +12,8 @@ Labirinto** leLabirintoEntrada (FILE *arquivoDeEntrada, int *linhas, int *coluna
     for (i=0; i<*linhas; i++) {
         fscanf(arquivoDeEntrada, "%s", aux); //Lendo a linha atual de características
         for (j=0; j<*colunas; j++) {
-            labirinto[i][j].valor = aux[j] - '0'; /* Transformando cada caractere de aux em um inteiro e o */
-                                                  /* armazenando em sua devida posição do labirinto */
+            labirinto[i][j].cor = aux[j] - '0'; /* Transformando cada caractere de aux em um inteiro e o */
+                                                /* armazenando em sua devida posição do labirinto */
         }
     }
     return labirinto;
