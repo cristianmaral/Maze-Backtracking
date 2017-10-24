@@ -2,7 +2,6 @@
 #include "LabirintoCachorro.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define ANALISE
 //#undef ANALISE
@@ -11,7 +10,7 @@ int main()
 {
     FILE *arquivoDeEntrada = NULL;
     Labirinto **labirinto;
-    char nomeArquivo[100];
+    char nomeArquivo[1000];
     int opcao, linhas, colunas;
 
     /* Repetir até que a opção 3 seja escolhida - finaliza o programa */
@@ -34,7 +33,6 @@ int main()
 
         printf("Entre com a opcao desejada: ");
         scanf("%d", &opcao);
-        system("cls");
         switch (opcao) {
             case 1:
                 do {
@@ -52,31 +50,30 @@ int main()
                 } while (arquivoDeEntrada == NULL);
                 break;
             case 2:
-                if (arquivoDeEntrada == NULL) {
-                    printf("Por favor carregue antes um arquivo de dados!\n");
-                    printf("Pressione qualquer tecla para continuar...");
-                    getchar();
-                    getchar();
-                    printf("\n");
-                }
+                if (arquivoDeEntrada == NULL)
+                    printf("\nPor favor carregue antes um arquivo de dados!\n\n");
                 else {
-                    printf("Calculando um possivel caminho para o cachorro...\n\n");
+                    printf("\nCalculando um possivel caminho para o cachorro...\n\n");
                     #ifndef ANALISE
                         solucionaLabirinto(labirinto, linhas, colunas);
                     #else
                         solucionaLabirinto2(labirinto, linhas, colunas);
                     #endif
                     printf("\n");
+                    /* Resetando as visitas para que seja possível calcular um caminho se o usuário
+                       desejar calcular o caminho novamente com o mesmo arquivo de entrada */
+                    resetaVisitas(labirinto, linhas, colunas);
                 }
-                /* Resetando as visitas para que seja possível se o usuário desejar calcular */
-                /* o caminho novamente com o mesmo arquivo de entrada */
-                resetaVisitas(labirinto, linhas, colunas);
                 break;
             case 3:
-                printf("Fim do programa!\n");
+                printf("\nFim do programa do Labirinto!\n");
                 return 0;
             default:
-                printf("Opcao invalida!\n\n");
+                printf("\nOpcao invalida!\n\n");
         }
+        printf("Pressione ENTER para continuar...");
+        getchar();
+        getchar();
+        system("clear");
     }
 }

@@ -10,13 +10,13 @@ typedef struct {
 
 /* Declaração das funções contidas no arquivo LabirintoCachorro.c */
 Labirinto** alocaLabirinto (int linhas, int colunas);
-int** alocaSolucao (int linhas, int colunas);
+int** alocaCaminho (int linhas, int colunas);
 void resetaVisitas (Labirinto **labirinto, int linhas, int colunas);
 int colunaInicial (Labirinto **labirinto, int linhas, int colunas);
-int calculaFlag (int *linhaSolucao, int jInicial);
-void imprimeSolucao (int **solucao, int movimentacoes, int linhas, int colunas, int jInicial);
-int movimenta_cachorro (Labirinto **labirinto, int **solucao, int *movimentacoes, int linhas, int colunas, int i, int j);
-int movimenta_cachorro2 (Labirinto **labirinto, int **solucao, int *movimentacoes, int *chamadasRecursivas,
+int calculaFlag (int *linhaCaminho, int jInicial);
+void imprimeSolucao (int **caminho, int movimentacoes, int linhas, int colunas, int jInicial);
+int movimenta_cachorro (Labirinto **labirinto, int **caminho, int *movimentacoes, int linhas, int colunas, int i, int j);
+int movimenta_cachorro2 (Labirinto **labirinto, int **caminho, int *movimentacoes, int *chamadasRecursivas,
                         int * maiorNivelRecursao, int nivel, int linhas, int colunas, int i, int j);
 void solucionaLabirinto (Labirinto **labirinto, int linhas, int colunas);
 void solucionaLabirinto2 (Labirinto **labirinto, int linhas, int colunas);
