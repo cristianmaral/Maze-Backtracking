@@ -10,7 +10,7 @@ int main()
 {
     FILE *arquivoDeEntrada = NULL;
     Labirinto **labirinto;
-    char nomeArquivo[1000];
+    char nomeArquivo[1000]; //O nome do arquivo de entrada pode ter no máximo 999 caracteres
     int opcao, linhas, colunas;
 
     /* Repetir até que a opção 3 seja escolhida - finaliza o programa */
@@ -19,7 +19,7 @@ int main()
         /* MENU */
         printf("+--------------------------------------+\n");
         #ifndef ANALISE
-            printf("|        Programa do Labirinto         |\n");
+            printf("\t\t   |        Programa do Labirinto         |\n");
         #else
             printf("| Programa do Labirinto - Modo Analise |\n");
         #endif
@@ -43,6 +43,7 @@ int main()
                     if (arquivoDeEntrada != NULL) {
                         printf("Arquivo %s carregado com sucesso!\n\n", nomeArquivo);
                         labirinto = leLabirintoEntrada(arquivoDeEntrada, &linhas, &colunas);
+                        fclose(arquivoDeEntrada);
                     }
                     else {
                         printf("ERRO: Arquivo inexistente!\n");
