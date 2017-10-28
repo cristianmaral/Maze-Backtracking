@@ -3,13 +3,15 @@
 #include <stdlib.h>
 
 /* Função para alocar dinamicamente o labirinto (matriz) */
-Labirinto** alocaLabirinto (int linhas, int colunas) {
-    Labirinto **labirinto;
+Labirinto alocaLabirinto (int linhas, int colunas) {
+    Labirinto labirinto;
     int i;
 
-    labirinto = (Labirinto **)malloc(linhas * sizeof(Labirinto *));
+    labirinto.cor = (int **)malloc(linhas * sizeof(int*));
+    labirinto.visitou = (int **)malloc(linhas * sizeof(int *));
     for (i=0; i<linhas; i++) {
-        labirinto[i] = (Labirinto *)calloc(colunas, sizeof(Labirinto));
+        labirinto.cor[i] = (int *)malloc(colunas * sizeof(int));
+        labirinto.visitou[i] = (int *)calloc(colunas, sizeof(int));
     }
     return labirinto;
 }
@@ -27,21 +29,21 @@ int** alocaCaminho (int linhas, int colunas) {
 }
 
 /* Função para resetar os flags de visitou do labirinto */
-void resetaVisitas (Labirinto **labirinto, int linhas, int colunas) {
+void resetaVisitas (Labirinto *labirinto, int linhas, int colunas) {
     int i, j;
 
     for (i=0; i<linhas; i++) {
         for (j=0; j<colunas; j++) {
-            labirinto[i][j].visitou = 0;
+            labirinto->visitou[i][j] = 0;
         }
     }
 }
 
 /* Função para indicar a coluna inicial do cachorro */
-int colunaInicial (Labirinto **labirinto, int linhas, int colunas) {
+int colunaInicial (Labirinto *labirinto, int linhas, int colunas) {
     int i;
     for (i=0; i<colunas; i++) {
-        if (labirinto[linhas - 1][i].cor == 2) {
+        if (labirinto->cor[linhas - 1][i] == 2) {
             return i;
         }
     }
@@ -92,32 +94,31 @@ void imprimeSolucao (int **caminho, int movimentacoes, int linhas, int colunas, 
 
 /* Função recursiva que utiliza do paradigma Backtrack para encontrar um possível caminho */
 /* para o cachorro chegar ao destino do labirinto */
-int movimenta_cachorro (Labirinto **labirinto, int **caminho, int *movimentacoes, int linhas, int colunas, int i, int j) {
-    /* Se o cachorro conseguiu chegar ao topo do labirinto, returna 1 (encontrou um caminho válido) */
-    if(i == 0) {
-        caminho[i][j] = 1;
-        return 1;
-    }
-
+int movimenta_cachorro (Labirinto *labirinto, int **caminho, int *movimentacoes, int linhas, int colunas,
+                        int i, int j)
+{
     caminho[i][j] = 1; //Marcando como uma possível posição válida para a matriz de solução
-    labirinto[i][j].visitou = 1;
+    labirinto->visitou[i][j] = 1;
+    /* Se o cachorro conseguiu chegar ao topo do labirinto, returna 1 (encontrou um caminho válido) */
+    if(i == 0)
+        return 1;
 
     /* Tentando mover o cachorro para cima */
-    if (labirinto[i - 1][j].cor != 3 && labirinto[i - 1][j].visitou == 0 && i - 1 >= 0) {
+    if (labirinto->cor[i - 1][j] != 3 && labirinto->visitou[i - 1][j] == 0 && i - 1 >= 0) {
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
         if (movimenta_cachorro(labirinto, caminho, movimentacoes, linhas, colunas, i - 1, j) == 1)
             return 1;
     }
 
     /* Tentando mover o cachorro para a direita */
-    if (labirinto[i][j + 1].cor != 3 && labirinto[i][j + 1].visitou == 0 && j + 1 < colunas) {
+    if (labirinto->cor[i][j + 1] != 3 && labirinto->visitou[i][j + 1] == 0 && j + 1 < colunas) {
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
         if (movimenta_cachorro(labirinto, caminho, movimentacoes, linhas, colunas, i, j + 1) == 1)
             return 1;
     }
 
     /* Tentando mover o cachorro para a esquerda */
-    if (labirinto[i][j - 1].cor != 3 && labirinto[i][j - 1].visitou == 0 && j - 1 >= 0) {
+    if (labirinto->cor[i][j - 1] != 3 && labirinto->visitou[i][j - 1] == 0 && j - 1 >= 0) {
         (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
         if (movimenta_cachorro(labirinto, caminho, movimentacoes, linhas, colunas, i, j - 1) == 1)
            return 1;
@@ -129,71 +130,14 @@ int movimenta_cachorro (Labirinto **labirinto, int **caminho, int *movimentacoes
     caminho[i][j] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
     /* Se for a posição inicial do cachorro, o contador de movimentações não deve ser incrementado, pois
        não há nenhuma posição anterior à ela */
-    if (labirinto[i][j].cor == 1)
+    if (labirinto->cor[i][j] == 1)
         (*movimentacoes)++;
     return -1; //Backtrack ou sem solução
 }
 
-/* Função recursiva que utiliza do paradigma Backtrack para encontrar um possível caminho */
-/* para o cachorro chegar ao destino do labirinto - MODO ANÁLISE */
-int movimenta_cachorro2 (Labirinto **labirinto, int **caminho, int *movimentacoes, int *chamadasRecursivas,
-                        int *maiorNivelRecursao, int nivel, int linhas, int colunas, int i, int j) {
-    (*chamadasRecursivas)++; //Variável incrementada toda vez que esta função for chamada
-    nivel++;
-
-    /* Se o cachorro conseguiu chegar no topo do labirinto, returna 1 (encontrou um caminho válido) */
-    if (i == 0) {
-        if (nivel > *maiorNivelRecursao)
-            *maiorNivelRecursao = nivel;
-        caminho[i][j] = 1;
-        return 1;
-    }
-
-    caminho[i][j] = 1; //Marcando como posição válida para a matriz de solução
-    labirinto[i][j].visitou = 1;
-
-    /* Tentando mover o cachorro para cima */
-    if (labirinto[i - 1][j].cor != 3 && labirinto[i - 1][j].visitou == 0 && i - 1 >= 0) {
-        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
-        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
-                                linhas, colunas, i - 1, j) == 1)
-            return 1;
-    }
-
-    /* Tentando mover o cachorro para a direita */
-    if (labirinto[i][j + 1].cor != 3 && labirinto[i][j + 1].visitou == 0 && j + 1 < colunas) {
-        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
-        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
-                                linhas, colunas, i, j + 1) == 1)
-            return 1;
-    }
-
-    /* Tentando mover o cachorro para a esquerda */
-    if (labirinto[i][j - 1].cor != 3 && labirinto[i][j - 1].visitou == 0 && j - 1 >= 0) {
-        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
-        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas, maiorNivelRecursao, nivel,
-                                linhas, colunas, i, j - 1) == 1)
-            return 1;
-    }
-
-    /* Se nenhuma das possibilidades de movimento acima resultarem em uma posição válida,
-       será necessário utilizar backtrack */
-
-    caminho[i][j] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
-    /* Se for a posição inicial do cachorro, o contador de movimentações não deve ser incrementado, pois
-       não há nenhuma posição anterior à ela */
-    if (labirinto[i][j].cor == 1)
-        (*movimentacoes)++;
-    /* Se o nivel de recursão atual for maior do que o maior nível de recursão até o momento */
-    if (nivel > *maiorNivelRecursao)
-        *maiorNivelRecursao = nivel;
-
-    return -1; //Backtrack ou sem solução
-}
-
-/* Função para encapsular a função "movimenta_cachorro", cujo objetivo se baseia em informar */
-/* a posição inicial do cachorro */
-void solucionaLabirinto (Labirinto **labirinto, int linhas, int colunas) {
+/* Função para encapsular a função "movimenta_cachorro", cujo objetivo se baseia em informar
+   a posição inicial do cachorro */
+void solucionaLabirinto (Labirinto *labirinto, int linhas, int colunas) {
     int **caminho = alocaCaminho(linhas, colunas); //Matriz de solução - um caminho possível
     int iInicial = linhas - 1; //Linha inicial do cachorro
     int jInicial = colunaInicial(labirinto, linhas, colunas); //Coluna inicial do cachorro
@@ -205,8 +149,64 @@ void solucionaLabirinto (Labirinto **labirinto, int linhas, int colunas) {
         imprimeSolucao(caminho, movimentacoes, linhas, colunas, jInicial); //Imprime o caminho
 }
 
+/* Função recursiva que utiliza do paradigma Backtrack para encontrar um possível caminho
+   para o cachorro chegar ao destino do labirinto - MODO ANÁLISE */
+int movimenta_cachorro2 (Labirinto *labirinto, int **caminho, int *movimentacoes, int *chamadasRecursivas,
+                        int *maiorNivelRecursao, int nivel, int linhas, int colunas, int i, int j) {
+    (*chamadasRecursivas)++; //Variável incrementada toda vez que esta função for chamada
+    nivel++;
+    caminho[i][j] = 1; //Marcando como posição válida para a matriz de solução
+    labirinto->visitou[i][j] = 1;
+
+    /* Se o cachorro conseguiu chegar no topo do labirinto, returna d1 (encontrou um caminho válido) */
+    if (i == 0) {
+        if (nivel > *maiorNivelRecursao)
+            *maiorNivelRecursao = nivel;
+        return 1;
+    }
+
+
+    /* Tentando mover o cachorro para cima */
+    if (labirinto->cor[i - 1][j] != 3 && labirinto->visitou[i - 1][j] == 0 && i - 1 >= 0) {
+        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
+        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas,
+                                maiorNivelRecursao, nivel, linhas, colunas, i - 1, j) == 1)
+            return 1;
+    }
+
+    /* Tentando mover o cachorro para a direita */
+    if (labirinto->cor[i][j + 1] != 3 && labirinto->visitou[i][j + 1] == 0 && j + 1 < colunas) {
+        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
+        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas,
+                                maiorNivelRecursao, nivel, linhas, colunas, i, j + 1) == 1)
+            return 1;
+    }
+
+    /* Tentando mover o cachorro para a esquerda */
+    if (labirinto->cor[i][j - 1] != 3 && labirinto->visitou[i][j - 1] == 0 && j - 1 >= 0) {
+        (*movimentacoes)++; //Incrementando o contador de movimentações do cachorro
+        if (movimenta_cachorro2(labirinto, caminho, movimentacoes, chamadasRecursivas,
+                                maiorNivelRecursao, nivel, linhas, colunas, i, j - 1) == 1)
+            return 1;
+    }
+
+    /* Se nenhuma das possibilidades de movimento acima resultarem em uma posição válida,
+       será necessário utilizar backtrack */
+
+    caminho[i][j] = 0; //Removendo a posição atual da solução final do problema (atribuindo 0)
+    /* Se for a posição inicial do cachorro, o contador de movimentações não deve ser incrementado, pois
+       não há nenhuma posição anterior à ela */
+    if (labirinto->cor[i][j] == 1)
+        (*movimentacoes)++;
+    /* Se o nivel de recursão atual for maior do que o maior nível de recursão até o momento */
+    if (nivel > *maiorNivelRecursao)
+        *maiorNivelRecursao = nivel;
+
+    return -1; //Backtrack ou sem solução
+}
+
 /* Função para encapsular a função movimenta_cachorro2 - MODO ANÁLISE */
-void solucionaLabirinto2 (Labirinto **labirinto, int linhas, int colunas) {
+void solucionaLabirinto2 (Labirinto *labirinto, int linhas, int colunas) {
     int **caminho = alocaCaminho(linhas, colunas); //Matriz de solução - um caminho possível
     int iInicial = linhas - 1; //Linha inicial do cachorro
     int jInicial = colunaInicial(labirinto, linhas, colunas); //Coluna inicial do cachorro

@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1509209123 source:/home/cristianmaral/Área de Trabalho/Tarefa A/Arquivo.c
+	"Arquivo.h"
+
+1509209125 /home/cristianmaral/Área de Trabalho/Tarefa A/Arquivo.h
+	"LabirintoCachorro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1509216198 /home/cristianmaral/Área de Trabalho/Tarefa A/LabirintoCachorro.h
+
+1509216203 source:/home/cristianmaral/Área de Trabalho/Tarefa A/LabirintoCachorro.c
+	"LabirintoCachorro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1509217435 source:/home/cristianmaral/Área de Trabalho/Tarefa A/main.c
+	"Arquivo.h"
+	"LabirintoCachorro.h"
+	<stdio.h>
+	<stdlib.h>
+

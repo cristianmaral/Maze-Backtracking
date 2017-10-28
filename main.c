@@ -9,7 +9,7 @@
 int main()
 {
     FILE *arquivoDeEntrada = NULL;
-    Labirinto **labirinto;
+    Labirinto labirinto;
     char nomeArquivo[1000]; //O nome do arquivo de entrada pode ter no máximo 999 caracteres
     int opcao, linhas, colunas;
 
@@ -19,7 +19,7 @@ int main()
         /* MENU */
         printf("+--------------------------------------+\n");
         #ifndef ANALISE
-            printf("\t\t   |        Programa do Labirinto         |\n");
+            printf("|         Programa do Labirinto        |\n");
         #else
             printf("| Programa do Labirinto - Modo Analise |\n");
         #endif
@@ -56,14 +56,14 @@ int main()
                 else {
                     printf("\nCalculando um possivel caminho para o cachorro...\n\n");
                     #ifndef ANALISE
-                        solucionaLabirinto(labirinto, linhas, colunas);
+                        solucionaLabirinto(&labirinto, linhas, colunas);
                     #else
-                        solucionaLabirinto2(labirinto, linhas, colunas);
+                        solucionaLabirinto2(&labirinto, linhas, colunas);
                     #endif
                     printf("\n");
                     /* Resetando as visitas para que seja possível calcular um caminho se o usuário
                        desejar calcular o caminho novamente com o mesmo arquivo de entrada */
-                    resetaVisitas(labirinto, linhas, colunas);
+                    resetaVisitas(&labirinto, linhas, colunas);
                 }
                 break;
             case 3:

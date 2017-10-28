@@ -6,6 +6,6 @@
 #include <stdlib.h>
 
 /* Declaração da função contida no arquivo Arquivo.c */
-Labirinto** leLabirintoEntrada (FILE *arquivoDeEntrada, int *linhas, int *colunas);
+Labirinto leLabirintoEntrada (FILE *arquivoDeEntrada, int *linhas, int *colunas);
 
 #endif // ARQUIVO_H_INCLUDED
